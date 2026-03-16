@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Suhit Mittal — Finance Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a08;
+    --surface: #111110;
+    --border: #222220;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --gold-dim: #7a6330;
+    --text: #e8e4d8;
+    --text-muted: #8a8578;
+    --accent: #2a4a3a;
+    --accent-bright: #4a8a6a;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* NOISE TEXTURE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1.5rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to bottom, rgba(10,10,8,0.95), transparent);
+    backdrop-filter: blur(8px);
+  }
+
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+
+  .nav-links a:hover { color: var(--gold); }
+
+  /* HERO */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 8rem 4rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse 60% 50% at 70% 40%, rgba(201,168,76,0.07) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 60% at 20% 80%, rgba(42,74,58,0.15) 0%, transparent 50%);
+  }
+
+  .hero-grid-line {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, var(--gold-dim), transparent);
+    right: 35%;
+    opacity: 0.3;
+  }
+
+  .hero-content {
+    position: relative;
+    max-width: 700px;
+    animation: fadeUp 1s ease forwards;
+  }
+
+  .hero-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .hero-tag::before {
+    content: '';
+    display: inline-block;
+    width: 40px;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3.5rem, 7vw, 6.5rem);
+    font-weight: 900;
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .hero-desc {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    max-width: 480px;
+    margin-bottom: 3rem;
+    line-height: 1.8;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 1.2rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    padding: 0.9rem 2rem;
+    background: var(--gold);
+    color: var(--bg);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s;
+    border: none;
+    cursor: pointer;
+  }
+
+  .btn-primary:hover {
+    background: var(--gold-light);
+    transform: translateY(-2px);
+  }
+
+  .btn-outline {
+    padding: 0.9rem 2rem;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.3s;
+  }
+
+  .btn-outline:hover {
+    border-color: var(--gold-dim);
+    color: var(--text);
+  }
+
+  /* STATS BAR */
+  .stats-bar {
+    display: flex;
+    gap: 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    margin: 4rem 4rem 0;
+    animation: fadeUp 1s 0.3s ease both;
+  }
+
+  .stat {
+    flex: 1;
+    padding: 2rem 2.5rem;
+    border-right: 1px solid var(--border);
+    position: relative;
+  }
+
+  .stat:last-child { border-right: none; }
+
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--gold);
+    display: block;
+  }
+
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-top: 0.3rem;
+  }
+
+  /* SECTIONS */
+  section {
+    padding: 6rem 4rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1.5rem;
+    margin-bottom: 4rem;
+  }
+
+  .section-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--gold-dim);
+    letter-spacing: 0.1em;
+  }
+
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    line-height: 1.1;
+  }
+
+  h2 em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  /* ABOUT */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .about-text p {
+    color: var(--text-muted);
+    margin-bottom: 1.2rem;
+    font-size: 1rem;
+  }
+
+  .about-text p strong { color: var(--text); font-weight: 500; }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem;
+  }
+
+  .skill-tag {
+    padding: 0.7rem 1rem;
+    border: 1px solid var(--border);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .skill-tag::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 2px;
+    background: var(--gold);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .skill-tag:hover {
+    border-color: var(--gold-dim);
+    color: var(--text);
+    background: rgba(201,168,76,0.04);
+  }
+
+  .skill-tag:hover::before { opacity: 1; }
+
+  /* PROJECTS */
+  .projects-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .project-item {
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    gap: 2.5rem;
+    align-items: start;
+    padding: 3rem 0;
+    border-bottom: 1px solid var(--border);
+    transition: all 0.3s;
+    cursor: default;
+  }
+
+  .project-item:first-child { border-top: 1px solid var(--border); }
+
+  .project-item:hover { background: rgba(201,168,76,0.02); }
+
+  .project-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--gold-dim);
+    letter-spacing: 0.1em;
+    padding-top: 0.3rem;
+  }
+
+  .project-content h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 0.8rem;
+    transition: color 0.3s;
+  }
+
+  .project-item:hover .project-content h3 { color: var(--gold); }
+
+  .project-content p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    line-height: 1.8;
+    margin-bottom: 1rem;
+  }
+
+  .project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .tag {
+    padding: 0.25rem 0.7rem;
+    background: rgba(201,168,76,0.08);
+    border: 1px solid var(--gold-dim);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+  }
+
+  .project-arrow {
+    font-size: 1.2rem;
+    color: var(--border);
+    padding-top: 0.3rem;
+    transition: color 0.3s, transform 0.3s;
+  }
+
+  .project-item:hover .project-arrow {
+    color: var(--gold);
+    transform: translate(3px, -3px);
+  }
+
+  /* CERTIFICATIONS */
+  .cert-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 2.5rem;
+    position: relative;
+    transition: all 0.3s;
+    overflow: hidden;
+  }
+
+  .cert-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(to right, var(--gold), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .cert-card:hover::after { opacity: 1; }
+  .cert-card:hover { border-color: var(--gold-dim); }
+
+  .cert-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .cert-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .cert-card p {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+  }
+
+  .certs-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  /* EDUCATION */
+  .edu-timeline {
+    position: relative;
+    padding-left: 2rem;
+  }
+
+  .edu-timeline::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--gold), var(--border));
+  }
+
+  .edu-item {
+    position: relative;
+    padding: 0 0 3rem 2.5rem;
+  }
+
+  .edu-item::before {
+    content: '';
+    position: absolute;
+    left: -2rem;
+    top: 0.4rem;
+    width: 8px;
+    height: 8px;
+    background: var(--gold);
+    border-radius: 50%;
+    box-shadow: 0 0 12px rgba(201,168,76,0.5);
+  }
+
+  .edu-year {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .edu-item h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .edu-item .school {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+  }
+
+  /* CONTACT */
+  #contact {
+    background: var(--surface);
+  }
+
+  .contact-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+  }
+
+  .contact-text h2 { margin-bottom: 1.2rem; }
+
+  .contact-text p {
+    color: var(--text-muted);
+    margin-bottom: 2.5rem;
+  }
+
+  .contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .contact-link {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.2rem 1.5rem;
+    border: 1px solid var(--border);
+    text-decoration: none;
+    color: var(--text);
+    transition: all 0.3s;
+    background: var(--bg);
+  }
+
+  .contact-link:hover {
+    border-color: var(--gold-dim);
+    background: rgba(201,168,76,0.04);
+  }
+
+  .contact-link-icon {
+    font-size: 1.1rem;
+    width: 24px;
+    text-align: center;
+  }
+
+  .contact-link-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .contact-link-value {
+    font-size: 0.9rem;
+    color: var(--text);
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 2.5rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--border);
+  }
+
+  footer p {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .fade-in {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* TICKER */
+  .ticker-wrap {
+    overflow: hidden;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 0.9rem 0;
+    background: rgba(201,168,76,0.02);
+  }
+
+  .ticker {
+    display: flex;
+    width: max-content;
+    animation: ticker 30s linear infinite;
+  }
+
+  .ticker span {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    padding: 0 2.5rem;
+    white-space: nowrap;
+  }
+
+  .ticker span.sep { color: var(--border); }
+
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* MOBILE */
+  @media (max-width: 768px) {
+    nav { padding: 1.2rem 1.5rem; }
+    .nav-links { display: none; }
+    #hero { padding: 6rem 1.5rem 3rem; }
+    .stats-bar { margin: 2rem 1.5rem 0; flex-direction: column; }
+    .stat { border-right: none; border-bottom: 1px solid var(--border); }
+    section { padding: 4rem 1.5rem; }
+    .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .skills-grid { grid-template-columns: 1fr; }
+    .project-item { grid-template-columns: 50px 1fr; }
+    .project-arrow { display: none; }
+    .certs-grid { grid-template-columns: 1fr; }
+    .contact-inner { grid-template-columns: 1fr; gap: 3rem; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">SM.</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#certifications">Certifications</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid-line"></div>
+  <div class="hero-content">
+    <div class="hero-tag">Finance Portfolio — 2025</div>
+    <h1>Suhit<br><em>Mittal</em></h1>
+    <p class="hero-desc">
+      Finance postgraduate specializing in financial modeling, valuation, and market analysis. PGDM — Fintech & Financial Management, ISBR Bangalore.
+    </p>
+    <div class="hero-cta">
+      <a href="#projects" class="btn-primary">View Projects</a>
+      <a href="#contact" class="btn-outline">Get in Touch</a>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker">
+    <span>DCF Valuation</span><span class="sep">◆</span>
+    <span>Financial Modeling</span><span class="sep">◆</span>
+    <span>Bloomberg Terminal</span><span class="sep">◆</span>
+    <span>Equity Research</span><span class="sep">◆</span>
+    <span>Portfolio Management</span><span class="sep">◆</span>
+    <span>WACC Analysis</span><span class="sep">◆</span>
+    <span>Technical Analysis</span><span class="sep">◆</span>
+    <span>3-Statement Modeling</span><span class="sep">◆</span>
+    <span>Sector Rotation</span><span class="sep">◆</span>
+    <span>Relative Valuation</span><span class="sep">◆</span>
+    <!-- duplicate for seamless loop -->
+    <span>DCF Valuation</span><span class="sep">◆</span>
+    <span>Financial Modeling</span><span class="sep">◆</span>
+    <span>Bloomberg Terminal</span><span class="sep">◆</span>
+    <span>Equity Research</span><span class="sep">◆</span>
+    <span>Portfolio Management</span><span class="sep">◆</span>
+    <span>WACC Analysis</span><span class="sep">◆</span>
+    <span>Technical Analysis</span><span class="sep">◆</span>
+    <span>3-Statement Modeling</span><span class="sep">◆</span>
+    <span>Sector Rotation</span><span class="sep">◆</span>
+    <span>Relative Valuation</span><span class="sep">◆</span>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-bar fade-in">
+  <div class="stat">
+    <span class="stat-num">3+</span>
+    <span class="stat-label">Live Projects</span>
+  </div>
+  <div class="stat">
+    <span class="stat-num">2</span>
+    <span class="stat-label">Trading Challenges</span>
+  </div>
+  <div class="stat">
+    <span class="stat-num">BMC</span>
+    <span class="stat-label">Bloomberg Certified</span>
+  </div>
+  <div class="stat">
+    <span class="stat-num">PGDM</span>
+    <span class="stat-label">ISBR Bangalore</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-header fade-in">
+    <span class="section-num">01</span>
+    <h2>About <em>Me</em></h2>
+  </div>
+  <div class="about-grid">
+    <div class="about-text fade-in">
+      <p>I'm a finance postgraduate at <strong>ISBR Business School, Bangalore</strong>, pursuing a PGDM in Fintech & Financial Management (Batch 2025–27).</p>
+      <p>My work focuses on <strong>financial modeling, equity valuation, and market analysis</strong> — building integrated three-statement models, performing DCF and relative valuation, and interpreting macroeconomic data via the Bloomberg Terminal.</p>
+      <p>I've competed in live trading challenges, managed simulated equity portfolios, and developed a strong foundation in both <strong>fundamental and technical analysis</strong>. I'm seeking entry-level roles in portfolio management, equity research, and investment analysis.</p>
+      <p>Background in <strong>B.Com</strong> from SPC Government College, Ajmer (2020–2023).</p>
+    </div>
+    <div class="fade-in">
+      <div style="font-family:'DM Mono',monospace;font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:1.2rem;">Core Competencies</div>
+      <div class="skills-grid">
+        <div class="skill-tag">DCF Valuation</div>
+        <div class="skill-tag">WACC Analysis</div>
+        <div class="skill-tag">3-Statement Modeling</div>
+        <div class="skill-tag">Relative Valuation</div>
+        <div class="skill-tag">Bloomberg Terminal</div>
+        <div class="skill-tag">Microsoft Excel (Adv.)</div>
+        <div class="skill-tag">Fundamental Analysis</div>
+        <div class="skill-tag">Technical Analysis</div>
+        <div class="skill-tag">Sector Rotation</div>
+        <div class="skill-tag">Portfolio Management</div>
+        <div class="skill-tag">P/E & EV/EBITDA</div>
+        <div class="skill-tag">Equity Research</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-header fade-in">
+    <span class="section-num">02</span>
+    <h2>Selected <em>Projects</em></h2>
+  </div>
+  <div class="projects-list">
+
+    <div class="project-item fade-in">
+      <div class="project-num">01</div>
+      <div class="project-content">
+        <h3>Equity Valuation & Financial Modeling — Tata Motors</h3>
+        <p>Built an integrated three-statement financial model forecasting revenue, expenses, and cash flows. Calculated WACC and performed DCF valuation to estimate intrinsic value. Conducted relative valuation using peer comparison (P/E, EV/EBITDA) to assess market positioning.</p>
+        <div class="project-tags">
+          <span class="tag">DCF</span>
+          <span class="tag">WACC</span>
+          <span class="tag">3-Statement Model</span>
+          <span class="tag">Relative Valuation</span>
+          <span class="tag">Excel</span>
+        </div>
+      </div>
+      <div class="project-arrow">↗</div>
+    </div>
+
+    <div class="project-item fade-in">
+      <div class="project-num">02</div>
+      <div class="project-content">
+        <h3>Bloomberg Trading Challenge — Portfolio Management Simulation</h3>
+        <p>Managed a simulated equity portfolio combining macroeconomic trend analysis, sector rotation strategies, and stock-specific valuation to optimize risk-return performance. Utilized Bloomberg Terminal functions for real-time data and screening.</p>
+        <div class="project-tags">
+          <span class="tag">Bloomberg Terminal</span>
+          <span class="tag">Portfolio Management</span>
+          <span class="tag">Sector Rotation</span>
+          <span class="tag">Risk-Return</span>
+        </div>
+      </div>
+      <div class="project-arrow">↗</div>
+    </div>
+
+    <div class="project-item fade-in">
+      <div class="project-num">03</div>
+      <div class="project-content">
+        <h3>Shri Ram Trading Challenge (2023)</h3>
+        <p>Executed short-term trades using technical indicators alongside news and event-driven analysis to identify high-probability opportunities. Applied candlestick patterns, RSI, MACD, and support/resistance levels in a competitive live-trading format.</p>
+        <div class="project-tags">
+          <span class="tag">Technical Analysis</span>
+          <span class="tag">RSI / MACD</span>
+          <span class="tag">Event-Driven</span>
+          <span class="tag">Short-Term Trading</span>
+        </div>
+      </div>
+      <div class="project-arrow">↗</div>
+    </div>
+
+    <div class="project-item fade-in">
+      <div class="project-num">04</div>
+      <div class="project-content">
+        <h3>Technical Analysis Workshop</h3>
+        <p>Analyzed price charts using candlestick patterns, RSI, MACD, and support/resistance levels. Developed a structured approach to identifying entry/exit signals and market momentum in equity markets.</p>
+        <div class="project-tags">
+          <span class="tag">Candlestick Patterns</span>
+          <span class="tag">RSI</span>
+          <span class="tag">MACD</span>
+          <span class="tag">Support & Resistance</span>
+        </div>
+      </div>
+      <div class="project-arrow">↗</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications">
+  <div class="section-header fade-in">
+    <span class="section-num">03</span>
+    <h2>Certifications & <em>Training</em></h2>
+  </div>
+  <div class="certs-grid">
+    <div class="cert-card fade-in">
+      <div class="cert-icon">📊</div>
+      <h3>Bloomberg Market Concepts (BMC)</h3>
+      <p>Practical expertise in Bloomberg Terminal — equity screening, financial statement analysis, and macroeconomic data interpretation.</p>
+    </div>
+    <div class="cert-card fade-in">
+      <div class="cert-icon">📈</div>
+      <h3>Financial Modeling — Tata Motors</h3>
+      <p>End-to-end equity valuation project: three-statement model, DCF, WACC, and peer-based relative valuation.</p>
+    </div>
+    <div class="cert-card fade-in">
+      <div class="cert-icon">🏆</div>
+      <h3>Trading Competitions</h3>
+      <p>Competed in the Bloomberg Trading Challenge and Shri Ram Trading Challenge — combining macro, sector, and technical analysis.</p>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="section-header fade-in">
+    <span class="section-num">04</span>
+    <h2><em>Education</em></h2>
+  </div>
+  <div class="edu-timeline">
+    <div class="edu-item fade-in">
+      <div class="edu-year">2025 — 2027 (Expected)</div>
+      <h3>Post Graduate Diploma in Management</h3>
+      <div class="school">Fintech & Financial Management · ISBR Business School, Bangalore</div>
+    </div>
+    <div class="edu-item fade-in">
+      <div class="edu-year">2020 — 2023</div>
+      <h3>Bachelor of Commerce</h3>
+      <div class="school">SPC Government College, Ajmer</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner">
+    <div class="contact-text fade-in">
+      <div class="section-header" style="margin-bottom:1.5rem;">
+        <span class="section-num">05</span>
+        <h2>Get in <em>Touch</em></h2>
+      </div>
+      <p>Open to opportunities in portfolio management, equity research, and investment analysis. Let's connect.</p>
+      <a href="mailto:suhitmittalca1999@gmail.com" class="btn-primary" style="display:inline-block;">Send a Message</a>
+    </div>
+    <div class="contact-links fade-in">
+      <a href="mailto:suhitmittalca1999@gmail.com" class="contact-link">
+        <span class="contact-link-icon">✉</span>
+        <div>
+          <div class="contact-link-label">Email</div>
+          <div class="contact-link-value">suhitmittalca1999@gmail.com</div>
+        </div>
+      </a>
+      <a href="tel:+916377882563" class="contact-link">
+        <span class="contact-link-icon">📱</span>
+        <div>
+          <div class="contact-link-label">Phone</div>
+          <div class="contact-link-value">+91 6377 882 563</div>
+        </div>
+      </a>
+      <a href="https://www.linkedin.com/in/suhitmittal/" target="_blank" class="contact-link">
+        <span class="contact-link-icon">🔗</span>
+        <div>
+          <div class="contact-link-label">LinkedIn</div>
+          <div class="contact-link-value">linkedin.com/in/suhitmittal</div>
+        </div>
+      </a>
+      <div class="contact-link">
+        <span class="contact-link-icon">🎓</span>
+        <div>
+          <div class="contact-link-label">Institution</div>
+          <div class="contact-link-value">ISBR Business School, Bangalore</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2025 Suhit Mittal — Finance Portfolio</p>
+  <p>PGDM Fintech & Financial Management · ISBR Bangalore</p>
+</footer>
+
+<script>
+  // Intersection Observer for fade-in animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          entry.target.classList.add('visible');
+        }, 100);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // Stagger project items
+  document.querySelectorAll('.project-item').forEach((el, i) => {
+    el.style.transitionDelay = `${i * 80}ms`;
+  });
+</script>
+</body>
+</html>
